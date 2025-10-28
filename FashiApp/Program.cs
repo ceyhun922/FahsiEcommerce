@@ -1,5 +1,9 @@
+using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
+using DataAccessLayer.Entityframework;
 using Microsoft.EntityFrameworkCore;
+using ServiceLayer.Abstract;
+using ServiceLayer.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +14,17 @@ builder.Services.AddDbContext<FashiDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaulConnect"),b=>b.MigrationsAssembly("FashiApp"));
 });
+
+//repolar
+builder.Services.AddScoped<IProductDAL, EFProductRepository>();
+builder.Services.AddScoped<ICategoryDal, EFCategoryRepository>();
+builder.Services.AddScoped<ISizeDAL, EFSizeRepository>();
+builder.Services.AddScoped<IColorDAL, EFColorRepository>();
+//servisler
+builder.Services.AddScoped<IColorService, ColorManager>();
+builder.Services.AddScoped<ISizeService, SizeManager>();
+builder.Services.AddScoped<IProductService, ProductManager>();
+builder.Services.AddScoped<ICategoryService, CategoryManager>();
 
 var app = builder.Build();
 
