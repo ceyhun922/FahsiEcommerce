@@ -1,7 +1,15 @@
+using DataAccessLayer.Concrete;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<FashiDbContext>(opt =>
+{
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaulConnect"),b=>b.MigrationsAssembly("FashiApp"));
+});
 
 var app = builder.Build();
 
